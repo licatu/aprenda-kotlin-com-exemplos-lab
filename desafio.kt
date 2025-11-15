@@ -1,21 +1,55 @@
-// [Template no Kotlin Playground](https://pl.kotl.in/WcteahpyN)
+enum class Nivel { BASICO, INTERMEDIARIO, AVANCADO }
 
-enum class Nivel { BASICO, INTERMEDIARIO, DIFICIL }
+class Usuario(val nome: String)
 
-class Usuario
+data class ConteudoEducacional(
+    var nome: String,
+    val duracao: Int = 60
+)
 
-data class ConteudoEducacional(var nome: String, val duracao: Int = 60)
-
-data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>) {
+data class Formacao(
+    val nome: String,
+    val nivel: Nivel,
+    var conteudos: List<ConteudoEducacional>
+) {
 
     val inscritos = mutableListOf<Usuario>()
-    
+
     fun matricular(usuario: Usuario) {
-        TODO("Utilize o parâmetro $usuario para simular uma matrícula (usar a lista de $inscritos).")
+        inscritos.add(usuario)
+        println("Usuário ${usuario.nome} matriculado na formação $nome.")
     }
 }
 
 fun main() {
-    TODO("Analise as classes modeladas para este domínio de aplicação e pense em formas de evoluí-las.")
-    TODO("Simule alguns cenários de teste. Para isso, crie alguns objetos usando as classes em questão.")
+
+    // Criando conteúdos
+    val kotlinBasico = ConteudoEducacional("Introdução ao Kotlin", 90)
+    val pooKotlin = ConteudoEducacional("Programação Orientada a Objetos com Kotlin", 120)
+    val colecoesKotlin = ConteudoEducacional("Trabalhando com Coleções em Kotlin", 100)
+
+    // Criando formação
+    val formacaoKotlin = Formacao(
+        nome = "Formação Kotlin Developer",
+        nivel = Nivel.INTERMEDIARIO,
+        
+        conteudos = listOf(kotlinBasico, pooKotlin, colecoesKotlin)
+    )
+
+    // Criando usuários
+    val usuario1 = Usuario("Ana")
+    val usuario2 = Usuario("Carlos")
+
+    // Matriculando usuários
+    formacaoKotlin.matricular(usuario1)
+    formacaoKotlin.matricular(usuario2)
+
+    println("\n--- Resumo da Formação ---")
+    println("Nome: ${formacaoKotlin.nome}")
+    println("Nível: ${formacaoKotlin.nivel}")
+    println("Conteúdos:")
+    formacaoKotlin.conteudos.forEach { println("- ${it.nome} (${it.duracao} min)") }
+
+    println("\nAlunos matriculados:")
+    formacaoKotlin.inscritos.forEach { println("- ${it.nome}") }
 }
